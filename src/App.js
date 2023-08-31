@@ -60,7 +60,7 @@ function App() {
               <h6>Počet míst:</h6>
               <p>{marker.properties.POCET_PS}</p>
               <h6>Rozměry:</h6>
-              <p>délka: {marker.properties.ROZM_DELKA}, šířka: {marker.properties.ROZM_SIRKA}</p>
+              <p>délka: {marker.properties.ROZM_DELKA} m, šířka: {marker.properties.ROZM_SIRKA} m</p>
             </Popup>
           </Marker>
         ))}
