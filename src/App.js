@@ -39,24 +39,23 @@ function ChangeMarkerSizeOnZoom({ zoom }) {
 
 
 function App() {
-  // URL of the JSON data
   const url = 'https://opendata.iprpraha.cz/CUR/DOP/DOP_TSK_Stani_ZTP_b/WGS_84/DOP_TSK_Stani_ZTP_b.json';
+  
+  const [markers, setMarkers] = React.useState([]); 
 
-  // Fetch the JSON data from the URL
-  fetch(url)
-    .then(response => response.json()) // Parse the response as JSON
-    .then(markers => {
-      // 'data' now contains the JSON data as a JavaScript object
-      console.log(markers);
-
-      // Do further processing with the 'data' object
-    })
-    .catch(error => {
-      console.error('Error fetching JSON:', error);
-    });
+  React.useEffect(() => {
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        setMarkers(data.features);
+      })
+      .catch(error => {
+        console.error('Error fetching JSON:', error);
+      });
+  }, []); // Empty dependency array to ensure the effect runs only once
 
   const handleMarkerClick = (event, marker) => {
-    // Handle marker click event
     console.log('Kliknutí na pívo!', marker.properties.OBJECTID);
   };
 
