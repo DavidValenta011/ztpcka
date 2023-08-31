@@ -43,7 +43,7 @@ function App() {
     {
       position: [50.0832, 14.4353], // Praha hl.n. coordinates
       name: 'Praha hl.n.',
-      description: 'Tady můžeš narazit na jednoho kamaráda co dělá průvodčího.',
+      description: 'Tady můžeš narazit na jednoho kamaráda co dělá průvodčího. S 8 ',
     },
     {
       position: [50.0847, 14.3569],
