@@ -3,25 +3,15 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-import markerIcon from './Images/beer.png'; // Import your custom marker icon
+import markerIcon from './Images/znacka.png'; // Import your custom marker icon
 
 // Create a custom icon using the imported marker icon image
 const createCustomMarkerIcon = (zoom) => L.icon({
   iconUrl: markerIcon,
-  iconSize: [zoom * 1.25, zoom * 3.75],
-  iconAnchor: [zoom * 0.625, zoom * 3.75],
-  popupAnchor: [0, -zoom * 3.75],
+  iconSize: [zoom * 1, zoom * 1.4],
+  iconAnchor: [zoom * 1, zoom * 1.4],
+  popupAnchor: [0, -zoom * 1.4],
 });
-
-
-// původní verze:
-/*const createCustomMarkerIcon = (zoom) => L.icon({
-  iconUrl: markerIcon,
-  iconSize: [zoom * 5, zoom * 15],
-  iconAnchor: [zoom * 2.5, zoom * 15],
-  popupAnchor: [0, -zoom * 15],
-});
-*/
 
 function ChangeMarkerSizeOnZoom({ zoom }) {
   const map = useMap();
@@ -56,7 +46,7 @@ function App() {
   }, []); // Empty dependency array to ensure the effect runs only once
 
   const handleMarkerClick = (event, marker) => {
-    console.log('Kliknutí na pívo!', marker.properties.OBJECTID);
+    console.log('Kliknutí na invalidní místo!', marker.properties.OBJECTID);
   };
 
   return (
@@ -64,10 +54,13 @@ function App() {
       <MapContainer center={[50.0906, 14.3954]} zoom={13} style={{ height: '100vh', width: '100%' }}>
         <ChangeMarkerSizeOnZoom />
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution="Map data © OpenStreetMap contributors" />
-        {markers.features.map((marker, index) => (
-          <Marker key={index} position={marker.geometry.coordinates} icon={createCustomMarkerIcon(13)} onClick={handleMarkerClick}>
+        {markers.map((marker, index) => (
+          <Marker key={index} position={[marker.geometry.coordinates[1], marker.geometry.coordinates[0]]} icon={createCustomMarkerIcon(13)} onClick={handleMarkerClick}>
             <Popup>
-              <h6>Něco o tomto místě:</h6>
+              <h6>Počet míst:</h6>
+              <p>{marker.properties.POCET_PS}</p>
+              <h6>Rozměry:</h6>
+              <p>délka: {marker.properties.ROZM_DELKA}, šířka: {marker.properties.ROZM_SIRKA}</p>
             </Popup>
           </Marker>
         ))}
