@@ -39,57 +39,25 @@ function ChangeMarkerSizeOnZoom({ zoom }) {
 
 
 function App() {
-  const markers = [
-    {
-      position: [50.0832, 14.4353], // Praha hl.n. coordinates
-      name: 'Praha hl.n.',
-      description: 'Tady můžeš narazit na jednoho kamaráda co dělá průvodčího. S 8 ',
-    },
-    {
-      position: [50.0847, 14.3569],
-      name: 'Břevnovský klášterní pivovar',
-      description: 'Benediktini umí kalit jakož i pivo vařit.',
-    },
-    {
-      position: [50.0971, 14.3999], 
-      name: 'Dejvická nádražka',
-      description: 'Stylový pajzl.',
-    },
-    {
-      position: [49.0459, 14.0743], 
-      name: 'Hospoda pod Kostelem',
-      description: 'Tady můžeš narazit na tu ku*du arafatskou.',
-    },
-    {
-      position: [50.0982, 14.3885], 
-      name: 'Klubovna',
-      description: 'Delirium.',
-    },
-    {
-      position: [49.0261, 14.0774], 
-      name: 'Sudetenland',
-      description: 'Jen pro vyvolené.',
-    },
-    {
-      position: [49.0129, 13.9984], 
-      name: 'Lockal U Jelena',
-      description: 'ČERPADLA!!!',
-    },
-    {
-      position: [50.0832, 14.4143], 
-      name: 'Standard Cafe',
-      description: 'Fajn barmanstvo',
-    },
-    {
-      position: [50.0977, 14.3961], 
-      name: 'Kavárna Alibi',
-      description: 'I lahváč někdy přijde vhod',
-    },
-  ];
+  // URL of the JSON data
+  const url = 'https://opendata.iprpraha.cz/CUR/DOP/DOP_TSK_Stani_ZTP_b/WGS_84/DOP_TSK_Stani_ZTP_b.json';
+
+  // Fetch the JSON data from the URL
+  fetch(url)
+    .then(response => response.json()) // Parse the response as JSON
+    .then(markers => {
+      // 'data' now contains the JSON data as a JavaScript object
+      console.log(markers);
+
+      // Do further processing with the 'data' object
+    })
+    .catch(error => {
+      console.error('Error fetching JSON:', error);
+    });
 
   const handleMarkerClick = (event, marker) => {
     // Handle marker click event
-    console.log('Kliknutí na pívo!', marker.name);
+    console.log('Kliknutí na pívo!', marker.properties.OBJECTID);
   };
 
   return (
@@ -97,12 +65,10 @@ function App() {
       <MapContainer center={[50.0906, 14.3954]} zoom={13} style={{ height: '100vh', width: '100%' }}>
         <ChangeMarkerSizeOnZoom />
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution="Map data © OpenStreetMap contributors" />
-        {markers.map((marker, index) => (
-          <Marker key={index} position={marker.position} icon={createCustomMarkerIcon(13)} onClick={handleMarkerClick}>
+        {markers.features.map((marker, index) => (
+          <Marker key={index} position={marker.geometry.coordinates} icon={createCustomMarkerIcon(13)} onClick={handleMarkerClick}>
             <Popup>
-              <h1>{marker.name}</h1>
               <h6>Něco o tomto místě:</h6>
-              <p>{marker.description}</p>
             </Popup>
           </Marker>
         ))}
